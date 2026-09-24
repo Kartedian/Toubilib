@@ -2,6 +2,7 @@
 
 namespace toubilib\domain\entities;
 
+
 class PraticienEntity{
     public function __construct(
         public readonly string $id,
