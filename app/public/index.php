@@ -14,3 +14,5 @@ $builder->addDefinitions(__DIR__ . '/../config/api.php');
 $container = $builder->build();
 
 $app = AppFactory::createFromContainer($container);
+
+$app->run();
