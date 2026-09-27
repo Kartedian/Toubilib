@@ -28,11 +28,13 @@ class RendezVousRepository implements RendezVousRepositoryInterface
 
         return new RendezVousEntity(
             $row['id'],
+            $row['praticien_id'],
+            $row['patient_id'],
             new DateTime($row['date_heure_debut']),
-            new DateTime($row['date_heure_fin']),
-            new DateTime($row['date_creation']),
             (int)$row['statut'],
             (int)$row['duree'],
+            new DateTime($row['date_heure_fin']),
+            new DateTime($row['date_creation']),
             $row['motif_visite']
         );
     }
@@ -42,7 +44,7 @@ class RendezVousRepository implements RendezVousRepositoryInterface
     {
         $stmt = $this->pdo->prepare('UPDATE rdv SET statut = :statut WHERE id = :id');
         $stmt->execute([
-            'statut' => $rdv->statut,
+            'statut' => $rdv->status,
             'id' => $rdv->id
         ]);
     }
