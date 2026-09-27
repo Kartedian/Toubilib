@@ -16,6 +16,7 @@ const HEURE_FIN_SOIR = '18:00';
 
 class PraticienEntity{
     public readonly string $id;
+    private array $rdvs = [];
 
     public function __construct(
         public readonly string $nom,
@@ -75,6 +76,14 @@ class PraticienEntity{
         if($heureFin > HEURE_FIN_SOIR)
             return false;
 
+        return true;
+    }
+
+    public function verifierDisponibilite(RendezVousEntity $newRDV):bool{
+        foreach ($this->rdvs as $rdv){
+            if($rdv->chevauche($newRDV))
+                return false;
+        }
         return true;
     }
 }
