@@ -2,6 +2,7 @@
 
 namespace toubilib\application\usecases;
 
+use DateTime;
 use Exception;
 use toubilib\application\dto\RendezVousDTO;
 use toubilib\application\ports\api\ServiceRendezVousInterface;
@@ -30,7 +31,7 @@ class ServiceRendezVous implements ServiceRendezVousInterface{
 
         $this->repository->updateStatus($rdv);
 
-        return new RendezVousDTO($rdv->id, $rdv->date_heure_debut->format('d-m-Y H:i:s'), $rdv->date_heure_fin->format('d-m-Y H:i:s'), $rdv->statut, $rdv->duree, $rdv->motif_visite);
+        return new RendezVousDTO($rdv->id, $rdv->date_heure_debut->format('d-m-Y H:i:s'), $rdv->date_heure_fin->format('d-m-Y H:i:s'), $rdv->status, $rdv->duree, $rdv->motif_visite);
     }
 
     public function creer(CreateRdvDTO $dto): CreateRdvDTO {
