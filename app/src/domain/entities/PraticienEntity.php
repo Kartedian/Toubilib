@@ -13,6 +13,7 @@ const HEURE_FIN_SOIR = '18:00';
 #   JEUDI = 4
 #   VENDREDI = 5
 
+
 class PraticienEntity{
     public readonly string $id;
 
