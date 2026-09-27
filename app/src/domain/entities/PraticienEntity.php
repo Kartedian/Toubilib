@@ -15,10 +15,10 @@ const HEURE_FIN_SOIR = '18:00';
 
 
 class PraticienEntity{
-    public readonly string $id;
     private array $rdvs = [];
 
     public function __construct(
+        public readonly string $id,
         public readonly string $nom,
         public readonly string $prenom,
         public readonly string $ville,
@@ -31,12 +31,7 @@ class PraticienEntity{
         public readonly bool $nouveau_patient,
         public readonly string $titre
     )
-    {
-        $data = random_bytes(16);
-        $data[6] = chr(ord($data[6]) & 0x0f | 0x40); 
-        $data[8] = chr(ord($data[8]) & 0x3f | 0x80); 
-        $this->id = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-    }
+    {}
 
     public function verifierMotif(string $motif):bool{
         if($motif === 'CI' || $motif === 'C0' || $motif === 'CS'){
@@ -82,8 +77,14 @@ class PraticienEntity{
     public function verifierDisponibilite(RendezVousEntity $newRDV):bool{
         foreach ($this->rdvs as $rdv){
             if($rdv->chevauche($newRDV))
-                return false;
+                #throw new \Exception("Le praticien n'est pas disponible à cet horaire.");
         }
         return true;
+    }
+
+    public function chargerRDVS(array $rdvs):void{
+        if(!empty($rdvs)){
+            $this->rdvs = clone $rdvs;
+        }
     }
 }
