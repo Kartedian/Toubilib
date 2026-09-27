@@ -46,4 +46,14 @@ class RendezVousEntity{
         $dateFin->modify("+$duree minutes");
         return new RendezVousEntity($praticien->id, $patient->id, $date, 0, $duree, $dateFin, new \DateTime('now'), $motif);
     }
+
+    public function chevauche(RendezVousEntity $autreRdv): bool{
+        if($this->date_heure_debut >= $autreRdv->date_heure_debut && $this->date_heure_debut < $autreRdv->date_heure_fin){
+            return true;
+        }
+        if ($this->date_heure_fin > $autreRdv->date_heure_debut && $this->date_heure_fin <= $autreRdv->date_heure_fin){
+            return true;
+        }
+        return false;
+    }
 }
