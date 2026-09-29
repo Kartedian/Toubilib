@@ -18,20 +18,41 @@ class PraticienRepository implements PraticienRepositoryInterface
         $this->pdo = $pdo;
     }
 
-    public function chargerPraticienAvecRdvsDuJour(string $idPraticien, \DateTime $dateRDV): PraticienEntity 
-    {
+    public function getById(string $id):?PraticienEntity{
         $stmt = $this->pdo->prepare("SELECT * FROM praticien WHERE id = :id");
-        $stmt->execute(['id' => $idPraticien]);
+        $stmt->execute(['id' => $id]);
         $praticienData = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$praticienData) {
             throw new Exception("Praticien introuvable dans la base de données.");
         }
 
+        $p = new PraticienEntity(
+            $praticienData['id'],
+            $praticienData['nom'],
+            $praticienData['prenom'],
+            $praticienData['ville'],
+            $praticienData['email'],
+            $praticienData['telephone'],
+            $praticienData['specialite_id'],
+            $praticienData['structure_id'],
+            $praticienData['rpps_id'],
+            $praticienData['organisation'],
+            $praticienData['nouveau_patient'],
+            $praticienData['titre']
+        );
+
+        return $p;
+    }
+
+    public function chargerPraticienAvecRdvsDuJour(string $idPraticien, \DateTime $dateRDV): PraticienEntity 
+    {
+        $p = $this->getById($idPraticien);
+
         $dateJour = $dateRDV->format('Y-m-d');
         
         $stmtRdvs = $this->pdo->prepare("
-            SELECT * FROM rendez_vous 
+            SELECT * FROM rdv 
             WHERE praticien_id = :id 
             AND DATE(date_heure_debut) = :date_jour
         ");
@@ -57,21 +78,6 @@ class PraticienRepository implements PraticienRepositoryInterface
                 $row['motif']
             );
         }
-
-        $p = new PraticienEntity(
-            $praticienData['id'],
-            $praticienData['nom'],
-            $praticienData['prenom'],
-            $praticienData['ville'],
-            $praticienData['email'],
-            $praticienData['telephone'],
-            $praticienData['specialite_id'],
-            $praticienData['structure_id'],
-            $praticienData['rpps_id'],
-            $praticienData['organisation'],
-            $praticienData['nouveau_patient'],
-            $praticienData['titre']
-        );
 
         $p->chargerRDVS($rdvsObjects);
 
