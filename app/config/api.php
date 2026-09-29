@@ -1,7 +1,19 @@
 <?php
+
+use Psr\Container\ContainerInterface;
 use toubilib\adapters\http\action\AnnulerRdvAction;
+use toubilib\adapters\http\action\CreerRdvAction;
+use toubilib\application\ports\api\ServiceRendezVousInterface;
 
 return [
-    // Injection du Service mÃ©tier dans l'Action Slim 
-    AnnulerRdvAction::class => \DI\autowire(AnnulerRdvAction::class)
+
+    AnnulerRdvAction::class => function (ContainerInterface $c) {
+        $service = $c->get(ServiceRendezVousInterface::class);
+        return new AnnulerRdvAction($service);
+    }, 
+
+    CreerRdvAction::class => function (ContainerInterface $c) {
+        $service = $c->get(ServiceRendezVousInterface::class); 
+        return new CreerRdvAction($service);
+    }
 ];

@@ -26,5 +26,6 @@ class RdvValidator {
         if($patient == null) {
             throw new \Exception("Le patient demandé n'existe pas");
         }
+
     }
 }

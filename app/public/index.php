@@ -14,5 +14,6 @@ $builder->addDefinitions(__DIR__ . '/../config/api.php');
 $container = $builder->build();
 
 $app = AppFactory::createFromContainer($container);
+$app->post('/rendezvous', \toubilib\adapters\http\action\CreerRdvAction::class);
 
 $app->run();

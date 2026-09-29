@@ -18,7 +18,7 @@ class AnnulerRdvAction
             $response->getBody()->write(json_encode($dto));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
             
-        } catch (\DomainException $e) { // Erreur métier (ex: RDV passé)
+        } catch (\DomainException $e) { 
             $response->getBody()->write(json_encode(['error' => $e->getMessage()]));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
             
