@@ -51,7 +51,7 @@ class PraticienEntity{
             if($motif === 'CS')
                 return 15;
         }
-        #throw new MotifPasValable(); 
+        throw new \InvalidArgumentException('Motif de rendez-vous invalide.');
     }
 
     public function verifierDateRDV(DateTime $dateHeureDemande, string $motif):bool{
@@ -76,15 +76,16 @@ class PraticienEntity{
 
     public function verifierDisponibilite(RendezVousEntity $newRDV):bool{
         foreach ($this->rdvs as $rdv){
-            if($rdv->chevauche($newRDV))
-                #throw new \Exception("Le praticien n'est pas disponible à cet horaire.");
+            if($rdv->chevauche($newRDV)) {
+                return false;
+            }
         }
         return true;
     }
 
     public function chargerRDVS(array $rdvs):void{
         if(!empty($rdvs)){
-            $this->rdvs = clone $rdvs;
+            $this->rdvs = $rdvs;
         }
     }
 }
