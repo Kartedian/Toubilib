@@ -48,4 +48,24 @@ class RendezVousRepository implements RendezVousRepositoryInterface
             'id' => $rdv->id
         ]);
     }
+
+    #[Override]
+    public function sauvegarder(RendezVousEntity $rdv): void
+    {
+        $stmt = $this->pdo->prepare("
+        insert into rdv values
+        :id, :id_praticien, :id_patient, :date_debut, :status, :duree, :date_fin, :date_creation, :motif");
+
+        $stmt->execute([
+            'id'=>$rdv->id,
+            'id_praticien'=>$rdv->praticien_id,
+            'id_patient'=>$rdv->patient_id,
+            'date_debut'=>$rdv->date_heure_debut,
+            'status'=>$rdv->status,
+            'duree'=>$rdv->duree,
+            'date_fin'=>$rdv->date_heure_fin,
+            'date_creation'=>$rdv->date_creation,
+            'motif'=>$rdv->motif_visite
+        ]);
+    }
 }
