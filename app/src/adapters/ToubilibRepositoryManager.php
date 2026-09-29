@@ -12,6 +12,7 @@ class ToubilibRepositoryManager
 
     private ?PraticienRepository $praticienRepository = null;
     private ?RendezVousRepository $rendezVousRepository = null;
+    private ?PatientRepository $patientRepository = null;
 
     private function __construct(PDO $pdo)
     {
@@ -31,18 +32,26 @@ class ToubilibRepositoryManager
         return self::$instance;
     }
 
-    public function getPraticienRepository(): PDOPraticienRepository
+    public function getPatientRepository(){
+        if($this->patientRepository === null){
+            $this->patientRepository = new PatientRepository($this->pdo);
+        }
+
+        return $this->patientRepository;
+    }
+
+    public function getPraticienRepository(): PraticienRepository
     {
         if ($this->praticienRepository === null) {
-            $this->praticienRepository = new PDOPraticienRepository($this->pdo);
+            $this->praticienRepository = new PraticienRepository($this->pdo);
         }
         return $this->praticienRepository;
     }
 
-    public function getRendezVousRepository(): PDORendezVousRepository
+    public function getRendezVousRepository(): RendezVousRepository
     {
         if ($this->rendezVousRepository === null) {
-            $this->rendezVousRepository = new PDORendezVousRepository($this->pdo);
+            $this->rendezVousRepository = new RendezVousRepository($this->pdo);
         }
         return $this->rendezVousRepository;
     }
