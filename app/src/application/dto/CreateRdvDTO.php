@@ -2,7 +2,7 @@
 
 namespace toubilib\application\dto;
 
-use DateTimeImmutable;
+use DateTime;
 
 class CreateRdvDTO {
 
@@ -11,11 +11,7 @@ class CreateRdvDTO {
          public readonly string $idPraticien,
          public readonly string $idPatient,
          public readonly string $motif,
-         public readonly DateTimeImmutable $dateHeure,
+         public readonly DateTime $dateHeure,
     )
     {}
-
-
-
-    
 }
