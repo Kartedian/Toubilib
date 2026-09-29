@@ -8,6 +8,6 @@ use toubilib\application\dto\CreateRdvDTO;
 interface ServiceRendezVousInterface{
 
     public function annuler(string $id): RendezVousDTO;
-    public function creer(CreateRdvDTO $dto): CreateRdvDTO;
+    public function creer(CreateRdvDTO $dto): RendezVousDTO;
     
 }
