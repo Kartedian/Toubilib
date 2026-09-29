@@ -10,4 +10,6 @@ Interface RendezVousRepositoryInterface{
 
     public function updateStatus(RendezVousEntity $rdv);
 
+    public function sauvegarder(RendezVousEntity $rdv):void;
+
 }
