@@ -74,9 +74,9 @@ class PraticienEntity{
         return true;
     }
 
-    public function verifierDisponibilite(RendezVousEntity $newRDV):bool{
+    public function verifierDisponibilite(DateTimeImmutable $date_heure_debut, DateTimeImmutable $date_heure_fin):bool{
         foreach ($this->rdvs as $rdv){
-            if($rdv->chevauche($newRDV)) {
+            if($rdv->chevauche($date_heure_debut, $date_heure_fin)) {
                 return false;
             }
         }
