@@ -2,7 +2,7 @@
 
 namespace toubilib\adapters;
 
-use DateTime;
+use DateTimeImmutable;
 use Override;
 use PDO;
 use toubilib\domain\entities\RendezVousEntity;
@@ -30,11 +30,11 @@ class RendezVousRepository implements RendezVousRepositoryInterface
             $row['id'],
             $row['praticien_id'],
             $row['patient_id'],
-            new DateTime($row['date_heure_debut']),
+            new DateTimeImmutable($row['date_heure_debut']),
             (int)$row['statut'],
             (int)$row['duree'],
-            new DateTime($row['date_heure_fin']),
-            new DateTime($row['date_creation']),
+            new DateTimeImmutable($row['date_heure_fin']),
+            new DateTimeImmutable($row['date_creation']),
             $row['motif_visite']
         );
     }

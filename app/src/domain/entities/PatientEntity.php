@@ -2,7 +2,7 @@
 
 namespace toubilib\domain\entities;
 
-use DateTime;
+use DateTimeImmutable;
 use toubilib\domain\shared\UuidGenerator;
 
 class PatientEntity {
@@ -11,7 +11,7 @@ class PatientEntity {
         public readonly string $id,
         public readonly string $nom,
         public readonly string $prenom,
-        public readonly DateTime $date_naissance,
+        public readonly DateTimeImmutable $date_naissance,
         public readonly string $adresse,
         public readonly string $code_postal,
         public readonly string $ville,

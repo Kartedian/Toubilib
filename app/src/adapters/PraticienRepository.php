@@ -6,6 +6,7 @@ use toubilib\application\ports\spi\PraticienRepositoryInterface;
 use toubilib\domain\entities\PraticienEntity;
 use toubilib\domain\entities\RendezVousEntity;
 
+use DateTimeImmutable;
 use PDO;
 use Exception;
 
@@ -45,7 +46,7 @@ class PraticienRepository implements PraticienRepositoryInterface
         return $p;
     }
 
-    public function chargerPraticienAvecRdvsDuJour(string $idPraticien, \DateTime $dateRDV): PraticienEntity 
+    public function chargerPraticienAvecRdvsDuJour(string $idPraticien, DateTimeImmutable $dateRDV): PraticienEntity 
     {
         $p = $this->getById($idPraticien);
 
@@ -70,11 +71,11 @@ class PraticienRepository implements PraticienRepositoryInterface
                 $row['id'],
                 $row['praticien_id'],
                 $row['patient_id'],
-                new \DateTime($row['date_heure_debut']),
+                new DateTimeImmutable($row['date_heure_debut']),
                 (int)$row['statut'],
                 (int)$row['duree'],
-                new \DateTime($row['date_heure_fin']),
-                $row['date_creation'],
+                new DateTimeImmutable($row['date_heure_fin']),
+                new DateTimeImmutable($row['date_creation']),
                 $row['motif']
             );
         }

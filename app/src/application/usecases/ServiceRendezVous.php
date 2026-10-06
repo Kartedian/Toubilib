@@ -2,7 +2,7 @@
 
 namespace toubilib\application\usecases;
 
-use DateTime;
+use DateTimeImmutable;
 use Exception;
 use toubilib\adapters\ToubilibRepositoryManager;
 use toubilib\application\dto\RendezVousDTO;
