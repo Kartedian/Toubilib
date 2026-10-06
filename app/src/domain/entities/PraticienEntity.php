@@ -2,7 +2,7 @@
 
 namespace toubilib\domain\entities;
 
-use DateTime;
+use DateTimeImmutable;
 
 const HEURE_DEBUT_MATIN = '08:00';
 const HEURE_FIN_SOIR = '18:00';
@@ -54,7 +54,7 @@ class PraticienEntity{
         throw new \InvalidArgumentException('Motif de rendez-vous invalide.');
     }
 
-    public function verifierDateRDV(DateTime $dateHeureDemande, string $motif):bool{
+    public function verifierDateRDV(DateTimeImmutable $dateHeureDemande, string $motif):bool{
         $jour = (int) $dateHeureDemande->format('N');
         if( $jour === 6 || $jour === 7)
             return false;
@@ -65,7 +65,7 @@ class PraticienEntity{
         
         $dateCopy = clone $dateHeureDemande;
         $duree = $this->calculDureeRDV($motif);
-        $dateCopy->modify("+$duree minutes");
+        $dateCopy = $dateCopy->modify("+$duree minutes");
 
         $heureFin = $dateCopy->format('H:i');
         if($heureFin > HEURE_FIN_SOIR)
