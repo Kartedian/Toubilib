@@ -68,4 +68,64 @@ class RendezVousRepository implements RendezVousRepositoryInterface
             'motif'=>$rdv->motif_visite
         ]);
     }
+
+    public function getByPraticienId(string $id): array
+    {
+        $stmt = $this->pdo->prepare(
+            'Select *
+            from rdv
+            where praticien_id = :id'
+        );
+        $stmt->execute(['id' => $id]);
+
+        $rdvs = [];
+        
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $rdvs[] = new RendezVousEntity(
+                $row['id'],
+                $row['praticien_id'],
+                $row['patient_id'],
+                new DateTimeImmutable($row['date_heure_debut']),
+                (int)$row['statut'],
+                (int)$row['duree'],
+                new DateTimeImmutable($row['date_heure_fin']),
+                new DateTimeImmutable($row['date_creation']),
+                $row['motif_visite']
+            );
+        }
+
+        return $rdvs;
+    }
+
+    public function getByDates_IdPraticienId(string $id, DateTimeImmutable $dateDebut, DateTimeImmutable $datefin): array
+    {
+        $stmt = $this->pdo->prepare(
+            'Select *
+            from rdv
+            where praticien_id = :id and date_heure_debut between :debut and :fin'
+        );
+        $stmt->execute([
+            'id' => $id,
+            'debut' => $dateDebut,
+            'fin' => $datefin
+        ]);
+
+        $rdvs = [];
+        
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $rdvs[] = new RendezVousEntity(
+                $row['id'],
+                $row['praticien_id'],
+                $row['patient_id'],
+                new DateTimeImmutable($row['date_heure_debut']),
+                (int)$row['statut'],
+                (int)$row['duree'],
+                new DateTimeImmutable($row['date_heure_fin']),
+                new DateTimeImmutable($row['date_creation']),
+                $row['motif_visite']
+            );
+        }
+
+        return $rdvs;
+    }
 }
