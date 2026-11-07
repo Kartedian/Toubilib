@@ -7,7 +7,6 @@ use Exception;
 use toubilib\adapters\ToubilibRepositoryManager;
 use toubilib\application\dto\RendezVousDTO;
 use toubilib\application\ports\api\ServiceRendezVousInterface;
-use toubilib\application\ports\spi\RendezVousRepositoryInterface;
 use toubilib\domain\entities\RendezVousEntity;
 use toubilib\application\dto\CreateRdvDTO;
 use toubilib\application\validators\RdvValidator;
@@ -54,7 +53,17 @@ class ServiceRendezVous implements ServiceRendezVousInterface{
 
         $rdvRepo->updateStatus($rdv);
 
-        return new RendezVousDTO($rdv->id, $rdv->date_heure_debut->format('d-m-Y H:i:s'), $rdv->date_heure_fin->format('d-m-Y H:i:s'), $rdv->status, $rdv->duree, $rdv->motif_visite);
+        return new RendezVousDTO(
+            $rdv->id,
+            $rdv->praticien_id,
+            $rdv->patient_id,
+            $rdv->date_heure_debut->format('d-m-Y H:i:s'), 
+            $rdv->date_heure_fin->format('d-m-Y H:i:s'),
+            $rdv->date_creation->format('d-m-Y H:i:s'),
+            $rdv->status, 
+            $rdv->duree, 
+            $rdv->motif_visite
+        );
     }
 
     public function creer(CreateRdvDTO $dto): RendezVousDTO {
@@ -64,12 +73,31 @@ class ServiceRendezVous implements ServiceRendezVousInterface{
         $nouveauRdv = $this->reserver($dto);
 
         return new RendezVousDTO(
-            $nouveauRdv->id, 
+            $nouveauRdv->id,
+            $nouveauRdv->praticien_id,
+            $nouveauRdv->patient_id,
             $nouveauRdv->date_heure_debut->format('d-m-Y H:i:s'), 
-            $nouveauRdv->date_heure_fin->format('d-m-Y H:i:s'), 
+            $nouveauRdv->date_heure_fin->format('d-m-Y H:i:s'),
+            $nouveauRdv->date_creation->format('d-m-Y H:i:s'),
             $nouveauRdv->status, 
             $nouveauRdv->duree, 
             $nouveauRdv->motif_visite
+        );
+    }
+
+    public function getRdvsByPraticienId(string $id): array
+    {
+        return array_map(
+            fn($rdv) => RendezVousDTO::fromEntity($rdv),
+            $this->manager->getRendezVousRepository()->getByPraticienId($id)
+        );
+    }
+
+    public function getRdvsByDates_IdPraticienId(string $id, DateTimeImmutable $dateDebut, DateTimeImmutable $datefin): array
+    {
+        return array_map(
+            fn($rdv) => RendezVousDTO::fromEntity($rdv),
+            $this->manager->getRendezVousRepository()->getByDates_IdPraticienId($id, $dateDebut, $datefin)
         );
     }
 }
