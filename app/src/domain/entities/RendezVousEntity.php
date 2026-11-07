@@ -5,6 +5,7 @@ namespace toubilib\domain\entities;
 use DateTimeImmutable;
 use toubilib\domain\shared\UuidGenerator;
 
+
 class RendezVousEntity{
     use UuidGenerator;
     public function __construct(
@@ -12,7 +13,7 @@ class RendezVousEntity{
         public readonly string $praticien_id,
         public readonly string $patient_id,
         public readonly DateTimeImmutable $date_heure_debut,
-        public int $status,
+        public RdvStatus $status,
         public readonly int $duree,
         public readonly DateTimeImmutable $date_heure_fin,
         public readonly DateTimeImmutable $date_creation,
@@ -26,9 +27,34 @@ class RendezVousEntity{
         if($this->date_heure_debut < $og)
             throw new \Exception("error");
         
-        if($this->status != -1){
-            $this->status = -1;
+        if($this->status !== RdvStatus::NEUTRE){
+            throw new \Exception("error");
         }
+        $this->status = RdvStatus::ANNULER;
+    }
+
+    public function honorer(){
+        $og = new DateTimeImmutable();
+        if($this->date_heure_fin > $og)
+            throw new \Exception("error");
+        
+        if($this->status !== RdvStatus::NEUTRE){
+            throw new \Exception("error");
+        }
+
+        $this->status = RdvStatus::HONORER;
+    }
+
+    public function ignorer(){
+        $og = new DateTimeImmutable();
+        if($this->date_heure_fin > $og)
+            throw new \Exception("error");
+        
+        if($this->status !== RdvStatus::NEUTRE){
+            throw new \Exception("error");
+        }
+        
+        $this->status = RdvStatus::IGNORER;
     }
 
     public function getId(): string
@@ -61,7 +87,7 @@ class RendezVousEntity{
         return $this->date_creation;
     }
 
-    public function getStatus(): int
+    public function getStatus(): RdvStatus
     {
         return $this->status;
     }
@@ -91,7 +117,7 @@ class RendezVousEntity{
             #throw new DateRDVNotAvailableException();
         }
 
-        $newRDV = new RendezVousEntity(self::genererUuid() , $praticien->id, $patient->id, $date, 0, $duree, $dateFin, new \DateTimeImmutable('now'), $motif);
+        $newRDV = new RendezVousEntity(self::genererUuid() , $praticien->id, $patient->id, $date, RdvStatus::NEUTRE, $duree, $dateFin, new \DateTimeImmutable('now'), $motif);
 
         return $newRDV;
     }
