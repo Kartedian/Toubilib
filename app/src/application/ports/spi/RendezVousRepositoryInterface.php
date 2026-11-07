@@ -3,6 +3,7 @@
 namespace toubilib\application\ports\spi;
 
 use toubilib\domain\entities\RendezVousEntity;
+use DateTimeImmutable;
 
 Interface RendezVousRepositoryInterface{
 
@@ -12,4 +13,7 @@ Interface RendezVousRepositoryInterface{
 
     public function sauvegarder(RendezVousEntity $rdv):void;
 
+    public function getByPraticienId(string $id): array;
+
+    public function getByDates_IdPraticienId(string $id,  DateTimeImmutable $dateDebut, DateTimeImmutable $datefin): array;
 }
