@@ -31,6 +31,51 @@ class RendezVousEntity{
         }
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getPraticien_id(): string
+    {
+        return $this->praticien_id;
+    }
+
+    public function getPatient_id(): string
+    {
+        return $this->patient_id;
+    }
+
+    public function getDate_heure_debut(): DateTimeImmutable
+    {
+        return $this->date_heure_debut;
+    }
+
+    public function getDate_heure_fin(): DateTimeImmutable
+    {
+        return $this->date_heure_fin;
+    }
+
+    public function getDateCreation(): DateTimeImmutable
+    {
+        return $this->date_creation;
+    }
+
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    public function getDuree(): int
+    {
+        return $this->duree;
+    }
+
+    public function getMotif(): string
+    {
+        return $this->motif_visite;
+    }
+
     public static function validation_creationRDV(PraticienEntity $praticien, PatientEntity $patient, DateTimeImmutable $date, string $motif){
         $praticien->verifierMotif($motif);      
 
