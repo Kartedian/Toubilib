@@ -38,5 +38,7 @@ $app->post('/rdvs/{id}/annuler', \toubilib\adapters\http\action\AnnulerRdvAction
 
 $app->get('/praticiens/{id}', \toubilib\adapters\http\action\GetPraticienByIdAction::class);
 
+$app->get('/praticiens/{id}/agenda', \toubilib\adapters\http\action\GetAgendaPraticienAction::class);
+
 
 $app->run();
