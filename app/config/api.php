@@ -6,6 +6,8 @@ use toubilib\adapters\http\action\CreerRdvAction;
 use toubilib\adapters\http\action\GetPraticienByIdAction;
 use toubilib\application\ports\api\ServiceRendezVousInterface;
 use toubilib\application\ports\api\ServicePraticienInterface;
+use toubilib\adapters\http\action\GetAgendaPraticienAction;
+use toubilib\application\ports\api\ServicePraticienInterface;
 use toubilib\application\ports\spi\PraticienRepositoryInterface;
 use toubilib\application\usecases\ServicePraticien;
 
@@ -31,5 +33,18 @@ return [
     ServicePraticienInterface::class => function (ContainerInterface $c) {
         $repository = $c->get(PraticienRepositoryInterface::class);
         return new ServicePraticien($repository);
+    }
+
+    GetAgendaPraticienAction::class => function (\Psr\Container\ContainerInterface $c) {
+        return new \toubilib\adapters\http\action\GetAgendaPraticienAction(
+            $c->get(\toubilib\application\ports\api\ServicePraticienInterface::class)
+        );
+    },
+
+    ServicePraticienInterface::class => function (\Psr\Container\ContainerInterface $c) {
+        return new \toubilib\application\usecases\ServicePraticien(
+            $c->get(\toubilib\application\ports\spi\PraticienRepositoryInterface::class),
+            $c->get(\toubilib\application\ports\spi\RendezVousRepositoryInterface::class)
+        );
     }
 ];
