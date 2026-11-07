@@ -44,7 +44,6 @@ class AnnulerRdvAction
             return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
             
         } catch (\DomainException $e) { 
-            // Erreur métier (ex: le rendez-vous ne peut plus être annulé)
             $response->getBody()->write(json_encode(['error' => $e->getMessage()]));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
             
