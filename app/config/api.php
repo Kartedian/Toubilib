@@ -1,23 +1,26 @@
 <?php
 
 use Psr\Container\ContainerInterface;
-use toubilib\adapters\http\action\AnnulerRdvAction;
 use toubilib\adapters\http\action\CreerRdvAction;
 use toubilib\adapters\http\action\GetPraticienByIdAction;
-use toubilib\application\ports\api\ServiceRendezVousInterface;
-use toubilib\application\ports\api\ServicePraticienInterface;
 use toubilib\adapters\http\action\GetAgendaPraticienAction;
 use toubilib\adapters\http\action\GetCreneauxPraticienAction;
+use toubilib\adapters\http\action\GetRdvDetailAction;
+use toubilib\adapters\http\action\ListerRdvsPraticienAction;
+use toubilib\adapters\http\action\StatusRdvAction;
 use toubilib\application\ports\api\ServicePraticienInterface;
+use toubilib\application\ports\api\ServiceRendezVousInterface;
+use toubilib\application\ports\spi\RendezVousRepositoryInterface;
 use toubilib\application\ports\spi\PraticienRepositoryInterface;
 use toubilib\application\usecases\ServicePraticien;
+use toubilib\application\usecases\ServiceRendezVous;
 
 return [
 
 
-    AnnulerRdvAction::class => function (ContainerInterface $c) {
+    StatusRdvAction::class => function (ContainerInterface $c) {
         $service = $c->get(ServiceRendezVousInterface::class);
-        return new AnnulerRdvAction($service);
+        return new StatusRdvAction($service);
     }, 
 
     CreerRdvAction::class => function (ContainerInterface $c) {
@@ -34,7 +37,7 @@ return [
     ServicePraticienInterface::class => function (ContainerInterface $c) {
         $repository = $c->get(PraticienRepositoryInterface::class);
         return new ServicePraticien($repository);
-    }
+    },
 
     GetAgendaPraticienAction::class => function (\Psr\Container\ContainerInterface $c) {
         return new \toubilib\adapters\http\action\GetAgendaPraticienAction(
@@ -53,5 +56,22 @@ return [
             $c->get(\toubilib\application\ports\spi\PraticienRepositoryInterface::class),
             $c->get(\toubilib\application\ports\spi\RendezVousRepositoryInterface::class)
         );
-    }
+    },
+
+    ServiceRendezVousInterface::class => function (ContainerInterface $c) {
+        $repository = $c->get(RendezVousRepositoryInterface::class);
+        return new ServiceRendezVous($repository);
+    },
+
+    ListerRdvsPraticienAction::class => function (\Psr\Container\ContainerInterface $c) {
+        return new ListerRdvsPraticienAction(
+            $c->get(ServiceRendezVousInterface::class)
+        );
+    },
+
+    GetRdvDetailAction::class => function (\Psr\Container\ContainerInterface $c) {
+        return new GetRdvDetailAction(
+            $c->get(ServiceRendezVousInterface::class)
+        );
+    },
 ];
