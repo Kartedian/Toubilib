@@ -40,5 +40,7 @@ $app->get('/praticiens/{id}', \toubilib\adapters\http\action\GetPraticienByIdAct
 
 $app->get('/praticiens/{id}/agenda', \toubilib\adapters\http\action\GetAgendaPraticienAction::class);
 
+$app->get('/praticiens/{id}/rdvs', \toubilib\adapters\http\action\GetCreneauxPraticienAction::class);
+
 
 $app->run();

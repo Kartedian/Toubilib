@@ -7,6 +7,7 @@ use toubilib\adapters\http\action\GetPraticienByIdAction;
 use toubilib\application\ports\api\ServiceRendezVousInterface;
 use toubilib\application\ports\api\ServicePraticienInterface;
 use toubilib\adapters\http\action\GetAgendaPraticienAction;
+use toubilib\adapters\http\action\GetCreneauxPraticienAction;
 use toubilib\application\ports\api\ServicePraticienInterface;
 use toubilib\application\ports\spi\PraticienRepositoryInterface;
 use toubilib\application\usecases\ServicePraticien;
@@ -37,6 +38,12 @@ return [
 
     GetAgendaPraticienAction::class => function (\Psr\Container\ContainerInterface $c) {
         return new \toubilib\adapters\http\action\GetAgendaPraticienAction(
+            $c->get(\toubilib\application\ports\api\ServicePraticienInterface::class)
+        );
+    },
+
+     GetCreneauxPraticienAction::class => function (\Psr\Container\ContainerInterface $c) {
+        return new \toubilib\adapters\http\action\GetCreneauxPraticienAction(
             $c->get(\toubilib\application\ports\api\ServicePraticienInterface::class)
         );
     },
